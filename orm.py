@@ -44,7 +44,7 @@ async def select(sql, args, size=None):
     """
 
     logging.log(sql, args)
-    # global __pool
+    global __pool
     try:
         with await __pool as conn:
             cur = await conn.cursor(aiomysql.DictCursor)
@@ -274,3 +274,4 @@ class FloatField(Field):
 class TextField(Field):
     def __init__(self, name=None, primary_key=False, default=None, ddl='mediumtext'):
         super().__init__(name, ddl, primary_key, default)
+
