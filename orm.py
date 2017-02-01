@@ -8,6 +8,10 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 
+def log(sql, args=tuple()):
+    logging.info('SQL: %s' % sql)
+
+
 async def create_pool(loop, **kw):
     logging.info('creating database connection pool...')
     global __pool
@@ -23,6 +27,7 @@ async def create_pool(loop, **kw):
         minsize=kw.get('minsize', 1),
         loop=loop
     )
+
 
 async def destroy_pool():
     if __pool is not None:
@@ -43,35 +48,40 @@ async def select(sql, args, size=None):
     :return:
     """
 
-    logging.log(sql, args)
+    log(sql, args)
     global __pool
-    try:
-        with await __pool as conn:
-            cur = await conn.cursor(aiomysql.DictCursor)
+
+    async with __pool.get() as conn:  # TODO: 为什么可以用async,__pool.get()是什么
+        async with conn.cursor(aiomysql.DictCursor) as cur:
             await cur.execute(sql.replace('?', '%s'), args or ())
             if size:
                 rs = await cur.fetchmany(size)
             else:
                 rs = await cur.fetchall()
-            await cur.close()
-            logging.info('rows returned: %s' % len(rs))
-    except BaseException as e:
-        raise
+        logging.info('rows returned: %s' % len(rs))
+        conn.close()
     return rs
 
 
 # 封装INSERT, UPDATE, DELETE
-async def execute(sql, args):
-    logging.log(sql, args)
-    with await __pool as conn:
+async def execute(sql, args, autocommit=True):
+    log(sql)
+    affected = 0
+    async with __pool.get() as conn:
+        if not autocommit:
+            await conn.begin()
         try:
-            cur = await conn.cursor(aiomysql.DictCursor)
-            await cur.execute(sql.replace('?', '%s'), args)
-            affected = cur.rowcount
-            await cur.close()
+            async with conn.cursor(aiomysql.DictCursor) as cur:
+                await cur.execute(sql.replace('?', '%s'), args)
+                affected = cur.rowcount
+            if not autocommit:
+                await conn.commit()
         except BaseException as e:
-            raise
-    return affected
+            if not autocommit:
+                await conn.rollback()  # TODO：conn.rollback()的作用是什么
+                raise e
+        conn.close()
+        return affected
 
 
 def create_args_string(num):
@@ -159,22 +169,22 @@ class Model(dict, metaclass=ModelMetaclass):
             logging.warning('failed to insert record: affected rows: %s' % rows)
 
     @classmethod
-    async def find_all(cls, pdict):
+    async def findall(cls, **kw):
         """ find all object by all kinds of key"""
-        long = len(pdict)
+        long = len(kw)
         my_list = ['`?`=?'] * long
         my_pk = list()
         if long == 1:
             word = my_list[0]
         else:
             word = ' and '.join(my_list)
-        for k, v in pdict.items():
+        for k, v in kw.items():
             my_pk.append(k)
             my_pk.append(v)
         rs = await select('%s where (%s)' % (cls.__select__, word), my_pk)
         if len(rs) == 0:
             return None
-        return rs
+        return cls(**rs)
 
     """
     @classmethod
@@ -200,12 +210,11 @@ class Model(dict, metaclass=ModelMetaclass):
         rs = await select('%s where (%s)' % (cls.__select__, word), my_pk)
         return len(rs)
 
-    async def update(self, primary_key=None, default=None):
-        if not primary_key:
-            primary_key = self.__primary_key__
+    async def update(self):
         args = list(map(self.get_value_or_default, self.__fields__))
+        primary_key = self.__primary_key__
         args.append(self.get_value_or_default(primary_key))
-        rows = await execute(self.__updata__, args)
+        rows = await execute(self.__update__, args)
         if rows != 1:
             logging.warning('failed to update by primary key: affected rows: %s' % rows)
 
@@ -257,21 +266,20 @@ class StringField(Field):
 
 
 class IntegerField(Field):
-    def __init__(self, name=None, primary_key=False, default=None, ddl='bigint'):
+    def __init__(self, name=None, primary_key=False, default=0, ddl='bigint'):
         super().__init__(name, ddl, primary_key, default)
 
 
 class BooleanField(Field):
-    def __init__(self, name=None, primary_key=False, default=None, ddl='bool'):
+    def __init__(self, name=None, primary_key=False, default=False, ddl='boolean'):
         super().__init__(name, ddl, primary_key, default)
 
 
 class FloatField(Field):
-    def __init__(self, name=None, primary_key=False, default=None, ddl='real'):
+    def __init__(self, name=None, primary_key=False, default=0.0, ddl='real'):
         super().__init__(name, ddl, primary_key, default)
 
 
 class TextField(Field):
     def __init__(self, name=None, primary_key=False, default=None, ddl='mediumtext'):
         super().__init__(name, ddl, primary_key, default)
-

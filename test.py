@@ -10,17 +10,19 @@ loop = asyncio.get_event_loop()
 async def test():
     await orm.create_pool(loop=loop, user='lichenxi', password='Lichenxi20000110', db='awesome')
 
-    u = Users(name='Test', email='test@example.com', password='password', image='about:blank', id='123456789')
+    # u = Users(name='Test', email='test@example.com', password='password', image='about:blank',
+    #           id='0014859201505236139fca0300c4a53b3ec52bf92e5d961000')
+    #
+    # await u.save()
 
-    await u.save()
-
-    my_id1 = await Users.find('123456789')
+    my_id1 = await Users.find('0014859201505236139fca0300c4a53b3ec52bf92e5d961000')
     print(my_id1)
 
-    u = Users(naem='Eric', email='test@example.com', password='password', image='about:blank')
-    await u.update('123456789')
-
-    my_id2 = await Users.find_all(dict(name='Eric'))
+    # u = Users(id='0014859201505236139fca0300c4a53b3ec52bf92e5d961000', name='Eric', email='test@example.com',
+    #           password='password', image='about:blank')
+    # await u.update()
+    #
+    my_id2 = await Users.find_all(name='Eric')
     print(my_id2)
 
 
