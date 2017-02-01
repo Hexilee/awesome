@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+
 import asyncio
 import aiomysql
 import sys
 import logging
+
+__author__ = 'Li Chenxi'
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -211,7 +215,7 @@ class Model(dict, metaclass=ModelMetaclass):
             return None
         else:
             return rs[0]['_num_']
-# TODO: findnumber函数的用法
+        # TODO: findnumber函数的用法
 
     async def update(self):
         args = list(map(self.get_value_or_default, self.__fields__))

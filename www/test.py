@@ -1,8 +1,6 @@
-import orm
-from models import Users, Blogs, Comments
 import asyncio
-import aiomysql
-import sys
+from www import orm
+from www.models import Users
 
 loop = asyncio.get_event_loop()
 
