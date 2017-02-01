@@ -29,13 +29,6 @@ async def create_pool(loop, **kw):
     )
 
 
-async def destroy_pool():
-    if __pool is not None:
-        __pool.close()
-        await __pool.wait_closed()
-        # TODO: wait_closed()方法的作用是什么
-
-
 # 封装SELECT
 async def select(sql, args, size=None):
     #  TODO:弄清楚log的作用和sql的数据类型
@@ -169,22 +162,33 @@ class Model(dict, metaclass=ModelMetaclass):
             logging.warning('failed to insert record: affected rows: %s' % rows)
 
     @classmethod
-    async def findall(cls, **kw):
-        """ find all object by all kinds of key"""
-        long = len(kw)
-        my_list = ['`?`=?'] * long
-        my_pk = list()
-        if long == 1:
-            word = my_list[0]
-        else:
-            word = ' and '.join(my_list)
-        for k, v in kw.items():
-            my_pk.append(k)
-            my_pk.append(v)
-        rs = await select('%s where (%s)' % (cls.__select__, word), my_pk)
-        if len(rs) == 0:
-            return None
-        return cls(**rs)
+    async def findall(cls, where=None, args=None, **kw):
+        """ find all object by where clause."""
+        sql = [cls.__select__]
+        if where:
+            sql.append('where')
+            sql.append(where)
+        if args is None:
+            args = list()
+
+        orderby = kw.get('orderby', None)
+        if orderby:
+            sql.append('order by')
+            sql.append(orderby)
+
+        limit = kw.get('limit', None)
+        if limit:
+            sql.append('limit')
+            if isinstance(limit, int):
+                sql.append('?')
+                args.append(limit)
+            elif isinstance(limit, tuple) and len(limit) == 2:
+                sql.append('?, ?')
+                args.extend(limit)  # list和tuple合并
+            else:
+                raise ValueError('Invalid limit value: %s' % str(limit))
+        rs = await select(' '.join(sql), args)
+        return rs  # TODO：为什么廖大要用[cls(**r) for r in rs]
 
     """
     @classmethod
@@ -196,19 +200,18 @@ class Model(dict, metaclass=ModelMetaclass):
     """  # TODO: 为什么len(rs)报错
 
     @classmethod
-    async def find_number(cls, pdict):
-        long = len(pdict)
-        my_list = ['`?`=?'] * long
-        my_pk = list()
-        if long == 1:
-            word = my_list[0]
+    async def findnumber(cls, select_field, where=None, args=None):
+        """find number by select and where."""
+        sql = ['select %s _num_ from `%s`' % (select_field, cls.__table__)]
+        if where:
+            sql.append('where')
+            sql.append(where)
+        rs = await select(' '.join(sql), args, 1)
+        if len(rs) == 0:
+            return None
         else:
-            word = ' and '.join(my_list)
-        for k, v in pdict.items():
-            my_pk.append(k)
-            my_pk.append(v)
-        rs = await select('%s where (%s)' % (cls.__select__, word), my_pk)
-        return len(rs)
+            return rs[0]['_num_']
+# TODO: findnumber函数的用法
 
     async def update(self):
         args = list(map(self.get_value_or_default, self.__fields__))
