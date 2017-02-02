@@ -1,22 +1,20 @@
 import asyncio
-from www import orm
-from www.models import Users
+import orm
+from models import Users
 
 loop = asyncio.get_event_loop()
 
 
 async def test():
     await orm.create_pool(loop=loop, user='lichenxi', password='Lichenxi20000110', db='awesome')
-
-    # u = Users(name='Eric', email='eric@example.com', password='password', image='about:blank',
-    #           id='1114859201505236139fca0300c4a53b3ec52bf92e5d961000')
-    #
-    # await u.save()
+    for name in ['Python', 'Java', 'Cpp']:
+        u = Users(name=name, email='%s@example.com' % name, password='password', image='about:blank',)
+        await u.save()
 
     my_id1 = await Users.find('0014859201505236139fca0300c4a53b3ec52bf92e5d961000')
     print(my_id1)
 
-    await Users.delete('0014859201505236139fca0300c4a53b3ec52bf92e5d961000')
+    # await Users.delete('0014859201505236139fca0300c4a53b3ec52bf92e5d961000')
     # u = Users(id='0014859201505236139fca0300c4a53b3ec52bf92e5d961000', name='Eric', email='test@example.com',
     #           password='password', image='about:blank')
     # await u.update()

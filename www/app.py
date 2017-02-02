@@ -14,8 +14,32 @@ from aiohttp import web
 logging.basicConfig(level=logging.INFO)
 
 
+def my_jinja2(app, **kw):
+    logging.info('load my jinja...')
+    options = dict(
+        autoescape=kw.get('autoescape', True),
+        block_start_string=kw.get('block_start_string', '{%'),
+        block_end_string=kw.get('block_end_string', '%}'),
+        variable_start_string=kw.get('variable_start_string', '{{'),
+        variable_end_string=kw.get('variable_end_string', '}}'),
+        auto_reload=kw.get('auto_reload', True)
+    )
+    path = kw.get('path', None)
+    if not path:
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
+    logging.info('set jinja templates path: %s' % path)
+
+    env = Environment(loader=FileSystemLoader(path), **options)
+    filters = kw.get('filters')  # TODO: filters的作用是什么？
+    if filters:
+        for name, f in filters.items():
+            env.filters[name] = f
+    app['__templating__'] = env
+
+
 async def logger_factory(app, handler):
     print(handler)
+
     async def logger(request):
         logging.info('Request: %s %s' % (request.method, request.path))
         return await handler(request)
@@ -57,6 +81,7 @@ async def response_factory(app, handler):
             t, m = r
             if isinstance(t, int) and 100 <= t < 600:
                 return web.Response(status=t, body=str(m))
+
     return response
 
 
@@ -65,18 +90,20 @@ def datetime_filter(t):
     if my_time < 60:
         return u'1分钟前'
     if my_time < 3600:
-        return u'%s分钟前' % (my_time//60)
+        return u'%s分钟前' % (my_time // 60)
     if my_time < 86400:
-        return u'%s小时前' % (my_time//3600)
+        return u'%s小时前' % (my_time // 3600)
     if my_time < 604800:
-        return u'%s天前' % (my_time//86400)
+        return u'%s天前' % (my_time // 86400)
     dt = datetime.fromtimestamp(t)
     return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
 
 
 async def init(my_loop):
+    await orm.create_pool(loop=my_loop, host='127.0.0.1', port=3306, user='lichenxi', password='Lichenxi20000110', db='awesome')
     app = web.Application(loop=my_loop, middlewares=[logger_factory, response_factory])
     add_routes(app, 'handlers')
+    my_jinja2(app, filters=dict(datetime=datetime_filter))
     srv = await my_loop.create_server(app.make_handler(), '127.0.0.1', 9000)
     logging.info('Server started at http://localhost:9000...')
     return srv

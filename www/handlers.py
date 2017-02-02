@@ -2,10 +2,15 @@
 # -*- coding: utf-8 -*-
 from coroweb import get, post
 from aiohttp import web
+from models import Users
 
 __author__ = 'Li Chenxi'
 
 
 @get('/index')
-def index(a, b=1, *, c, d=2, request):
-    return web.Response(body=b'<h1>Awesome</h1>')
+async def index(request):
+    users = await Users.findall()
+    return {
+        '__template__': 'test.html',
+        'users': users
+    }
