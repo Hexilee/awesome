@@ -155,7 +155,8 @@ class RequestHandler(object):
                     if k in kw:
                         logging.warning('Duplicate arg name in named arg and kw args: %s args: %s' % k)
                     kw[k] = v
-
+        if self._has_request_args:
+            kw['request'] = request
         # check required kw
         if self._required_args:
             for name in self._required_args:
