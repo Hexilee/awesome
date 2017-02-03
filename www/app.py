@@ -102,6 +102,7 @@ def datetime_filter(t):
 async def init(my_loop):
     await orm.create_pool(loop=my_loop, host='127.0.0.1', port=3306, user='lichenxi', password='Lichenxi20000110', db='awesome')
     app = web.Application(loop=my_loop, middlewares=[logger_factory, response_factory])
+    add_static(app)
     add_routes(app, 'handlers')
     my_jinja2(app, filters=dict(datetime=datetime_filter))
     srv = await my_loop.create_server(app.make_handler(), '127.0.0.1', 9000)
