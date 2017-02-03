@@ -183,7 +183,7 @@ def add_route(app, fn):
     path = getattr(fn, '__path__', None)
     if path is None or method is None:
         raise ValueError('@get or @post not define in %s.' % str(fn))
-    if not asyncio.iscoroutinefunction(fn) and not inspect.isgeneratorfunction(fn):
+    if not asyncio.iscoroutinefunction(fn) and not inspect.isgeneratorfunction(fn):  # TODO：失效，或者，根本就没有必要？
         fn = asyncio.coroutine(fn)
     logging.info(
         'add route %s %s => %s(%s)' % (method, path, fn.__name__, ', '.join(inspect.signature(fn).parameters.keys())))
