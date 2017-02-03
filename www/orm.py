@@ -192,7 +192,8 @@ class Model(dict, metaclass=ModelMetaclass):
             else:
                 raise ValueError('Invalid limit value: %s' % str(limit))
         rs = await select(' '.join(sql), args)
-        return rs  # TODO：为什么廖大要用[cls(**r) for r in rs]
+        return [cls(**r) for r in rs]  # TODO：为什么廖大要用[cls(**r) for r in rs]
+        #  [cls(**r) for r in rs]返回的是Model对象的list, 而rs返回的是dict对象的list
 
     """
     @classmethod
@@ -211,11 +212,13 @@ class Model(dict, metaclass=ModelMetaclass):
             sql.append('where')
             sql.append(where)
         rs = await select(' '.join(sql), args, 1)
+        logging.debug(rs)
         if len(rs) == 0:
             return None
         else:
             return rs[0]['_num_']
         # TODO: findnumber函数的用法
+        # select count(index) _num_ from table_name: count计算出符合条件的index个数并赋值给_num_, findall返回[{'_num_: count()}]
 
     async def update(self):
         args = list(map(self.get_value_or_default, self.__fields__))

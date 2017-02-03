@@ -10,6 +10,8 @@ from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 from coroweb import add_routes, add_static
 from aiohttp import web
+from config import config
+from handlers import cookie_to_user, COOKIE_NAME
 
 logging.basicConfig(level=logging.INFO)
 
@@ -45,6 +47,23 @@ async def logger_factory(app, handler):
         return await handler(request)
 
     return logger
+
+
+async def auth_factory(app, handler):
+    async def auth(request):
+        logging.info('Check user: %s | %s' % (request.method, request.path))
+        request.__user__ = None
+        cookie_str = request.cookies.get(COOKIE_NAME)
+        if cookie_str:
+            user = await cookie_to_user(cookie_str)
+            if user:
+                logging.info('set current user: %s' % user.email)
+                request.__user__ = user
+        if request.path.startswith('/manage/') and (request.__user__ is None or not request.__user__.admin):
+            return web.HTTPFound('/signin')  # TODO: 重定向！！！
+        return await handler(request)
+
+    return auth
 
 
 async def response_factory(app, handler):
@@ -100,13 +119,13 @@ def datetime_filter(t):
 
 
 async def init(my_loop):
-    await orm.create_pool(loop=my_loop, host='127.0.0.1', port=3306, user='lichenxi', password='Lichenxi20000110', db='awesome')
-    app = web.Application(loop=my_loop, middlewares=[logger_factory, response_factory])
+    await orm.create_pool(loop=my_loop, **config.db)
+    app = web.Application(loop=my_loop, middlewares=[logger_factory, auth_factory, response_factory])
     add_static(app)
     add_routes(app, 'handlers')
     my_jinja2(app, filters=dict(datetime=datetime_filter))
-    srv = await my_loop.create_server(app.make_handler(), '127.0.0.1', 9000)
-    logging.info('Server started at http://localhost:9000...')
+    srv = await my_loop.create_server(app.make_handler(), '127.0.0.1', 80)
+    logging.info('Server started at http://localhost:80...')
     return srv
 
 
