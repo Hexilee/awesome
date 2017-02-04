@@ -13,7 +13,7 @@ import markdown2
 from coroweb import get, post
 from aiohttp import web
 from models import Users, Blogs, next_id, Comments
-from apis import APIError, APIValueError, APINotFound, APIPermissionError
+from apis import APIError, APIValueError, APINotFound, APIPermissionError, Page
 from config import config
 
 __author__ = 'Li Chenxi'
@@ -23,6 +23,11 @@ _RE_SHA1 = re.compile(r'^[0-9a-f]{40}$')
 
 COOKIE_NAME = 'qingxuanshabao'
 _COOKIE_KEY = config.session.secret
+
+
+def text_to_html(text):
+    lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'), filter(lambda s: s.strip() != '', text.split('\n')))
+    return ''.join(lines)
 
 
 def user_to_cookie(user, max_age):
@@ -70,7 +75,7 @@ async def index(request):
     ]
 
     return {
-        '__template__': 'blogs.html',
+        '__template__': 'index.html',
         'blogs': blogs,
         '__user__': request.__user__
     }
@@ -153,6 +158,36 @@ async def api_register_user(*, email, name, password):
     # TODO: 但是app.auth_factory仅仅应用了其的cookie属性
 
 
+def get_page_index(page_str):
+    p = 1
+    try:
+        p = int(page_str)
+    except ValueError as e:
+        raise e
+    if p < 1:
+        p = 1
+    return p
+
+
+@get('/manage/blogs')
+async def manage_blogs(*, page=1):
+    return {
+        '__template__': 'manage_blogs.html',
+        'page_index': get_page_index(page)
+    }
+
+
+@get('/api/blogs')
+async def api_blogs(*, page=1):
+    page_index = get_page_index(page)
+    num = await Blogs.findnumber('count(id)')
+    p = Page(num, page_index)
+    if num == 0:
+        return dict(page=p, blogs=())
+    blogs = await Blogs.findall(orderby='created_at desc', limit=(p.offset, p.limit))
+    return dict(page=p, blogs=blogs)
+
+
 @get('/manage/blogs/create')
 def manage_create_blogs(*, id=''):
     return {
@@ -160,6 +195,20 @@ def manage_create_blogs(*, id=''):
         'id': id,
         'action': '/api/blogs'
 
+    }
+
+
+@get('/blogs/{id}')
+async def get_blog(*, id):
+    blog = await Blogs.find(id)
+    comments = await Comments.findall(where='blog_id=?', args=[id, ], orderby='created_at desc')
+    for c in comments:
+        c.html_content = text_to_html(c.content)
+    blog.html_content = markdown2.markdown(blog.content)
+    return {
+        '__template__': 'blog.html',
+        'blog': blog,
+        'comments': comments
     }
 
 
