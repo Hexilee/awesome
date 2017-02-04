@@ -26,7 +26,8 @@ _COOKIE_KEY = config.session.secret
 
 
 def text_to_html(text):
-    lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'), filter(lambda s: s.strip() != '', text.split('\n')))
+    lines = map(lambda s: '<p>%s</p>' % s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;'),
+                filter(lambda s: s.strip() != '', text.split('\n')))
     return ''.join(lines)
 
 
@@ -65,18 +66,18 @@ async def cookie_to_user(cookie_str):
 
 
 @get('/')
-async def index(request):
-    summary = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit,' \
-              ' sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    blogs = [
-        Blogs(id='1', name='Test Blog', summary=summary, created_at=time.time() - 120),
-        Blogs(id='2', name='Something New', summary=summary, created_at=time.time() - 3600),
-        Blogs(id='3', name='Learn Python', summary=summary, created_at=time.time() - 7200),
-    ]
-
+async def index(request, *, page='1'):
+    page_index = get_page_index(page)
+    num = await Blogs.findnumber('count(id)')
+    page = Page(num, page_index, 8)
+    if num == 0:
+        blogs = []
+    else:
+        blogs = await Blogs.findall(orderBy='created_at desc', limit=(page.offset, page.limit))
     return {
         '__template__': 'index.html',
         'blogs': blogs,
+        'page': page,
         '__user__': request.__user__
     }
 
