@@ -175,8 +175,7 @@ def check_admin(request):
 
 
 @post('/api/blogs')
-async def api_create_blog(*, name, summary, content, request):
-    logging.error('HHHHHHHHHHH')
+async def api_create_blog(request, *, name, summary, content):
     check_admin(request)
     if not name or not name.strip():
         raise APIValueError('name', 'name cannot be empty')

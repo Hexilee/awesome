@@ -11,11 +11,10 @@
         action = '{{ action }}';
 
     function initVM(blog) {
-        alert(action);
         var vm = new Vue({
             el: '#vm',
             data: blog,
-            method: {
+            methods: {
                 submit: function (event) {
                     event.preventDefault();
                     var $form = $('#vm').find('form');
@@ -30,7 +29,6 @@
                 }
             }
         });
-        alert('HHHHHHHH');
         $('#vm').show();
     }
     //若存在ID， 则是进行原文修改， 获得原文api， 设置初始值。

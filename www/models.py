@@ -34,6 +34,7 @@ class Blogs(Model):
     user_image = StringField(ddl='varchar(500)')
     name = StringField(ddl='varchar(50)')
     content = TextField()
+    summary = StringField(ddl='varchar(200)')
     created_at = FloatField(default=time.time)
 
 
