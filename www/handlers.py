@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+"""  *******url handler******     """
 import time
 import re
 import hashlib
@@ -90,14 +92,13 @@ def signin():
 
 @post('/api/authenticate')
 async def authenticate(*, email, password):
-    logging.info('HHHHHHH')
     if not email:
         raise APIValueError('email', 'Invalid email')
     if not password:
         raise APIValueError('password', 'Invalid password')
     users = await Users.findall(where='email=?', args=[email, ])
     if len(users) == 0:
-        raise APIValueError('email', 'Email not exist')
+        raise APIValueError('email', 'Email not exist')  # TODO: 将错误返回至前端页面
     user = users[0]
     sha1 = hashlib.sha1()
     sha1.update(user.id.encode('utf-8'))
@@ -150,3 +151,40 @@ async def api_register_user(*, email, name, password):
     return r
     # TODO: 返回的json如何应用？==>> app.auth_factory
     # TODO: 但是app.auth_factory仅仅应用了其的cookie属性
+
+
+@get('/manage/blogs/create')
+def manage_create_blogs(*, id=''):
+    return {
+        '__template__': 'manage_blog_edit.html',
+        'id': id,
+        'action': '/api/blogs'
+
+    }
+
+
+@get('/api/blogs/{id}')
+async def api_get_blog(*, id):
+    blog = await Blogs.find(id)
+    return blog
+
+
+def check_admin(request):
+    if request.__user__ is None or not request.__user__.admin:
+        raise APIPermissionError()
+
+
+@post('/api/blogs')
+async def api_create_blog(*, name, summary, content, request):
+    logging.error('HHHHHHHHHHH')
+    check_admin(request)
+    if not name or not name.strip():
+        raise APIValueError('name', 'name cannot be empty')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty')
+    blog = Blogs(user_id=request.__user__.id, user_name=request.__user__.name, user_image=request.__user__.image,
+                 name=name.strip(), summary=summary.strip(), content=content.strip())
+    await blog.save()
+    return blog
