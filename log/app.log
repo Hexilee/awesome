@@ -1,0 +1,76 @@
+[app.log]
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+supervisor: couldn't exec /srv/awesome/www/app.py: ENOENT
+supervisor: child process was not spawned
+INFO:root:found model: Users (table: users)
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: password ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: admin ==> <BooleanField, boolean:None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: email ==> <StringField, varchar(50):None>
+INFO:root:found model: Blogs (table: blogs)
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: summary ==> <StringField, varchar(200):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:found model: Comments (table: comments)
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: blog_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+DEBUG:asyncio:Using selector: EpollSelector
+INFO:root:creating database connection pool...
+INFO:root:add static /static => /srv/awesome/www/static
+INFO:root:add route GET /api/blogs => api_blogs(page)
+INFO:root:add route POST /api/blogs => api_create_blog(request, name, summary, content)
+INFO:root:add route GET /api/blogs/{id} => api_get_blog(id)
+INFO:root:add route POST /api/users => api_register_user(email, name, password)
+INFO:root:add route POST /api/authenticate => authenticate(email, password)
+INFO:root:add route GET /blogs/{id} => get_blog(id)
+INFO:root:add route GET / => index(request, page)
+INFO:root:add route GET /manage/blogs => manage_blogs(page)
+INFO:root:add route GET /manage/blogs/create => manage_create_blogs(id)
+INFO:root:add route GET /register => register()
+INFO:root:add route GET /signin => signin()
+INFO:root:add route GET /signout => signout(request)
+INFO:root:load my jinja...
+INFO:root:set jinja templates path: /srv/awesome/www/templates
+INFO:root:Server started at http://123.206.182.83:9000...

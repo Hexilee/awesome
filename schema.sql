@@ -1,4 +1,9 @@
 -- schema.sql
+USE mysql;
+
+CREATE USER 'lichenxi'@'localhost' IDENTIFIED BY 'Lichenxi20000110';
+
+FLUSH PRIVILEGES;
 
 DROP DATABASE IF EXISTS awesome;
 
