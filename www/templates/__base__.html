@@ -24,6 +24,8 @@
     <title>{% block title %} ? {% endblock %} - 何夕的个人主页</title>
     <link rel="stylesheet" href="/static/css/uikit.min.css">
     <link rel="stylesheet" href="/static/css/awesome.css"/>
+    <link rel="stylesheet" href="/sattic/css/components/sticky.css">
+    <script src="static/js/components/sticky.js"></script>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/sha1.min.js"></script>
     <script src="/static/js/uikit.min.js"></script>
@@ -33,41 +35,42 @@
     {% block beforehead %}<!-- before head  -->{% endblock %}
 </head>
 <body>
-<nav class="uk-navbar uk-navbar-attached uk-margin-bottom">
-    <div class="uk-container uk-container-center">
-        <a href="/" class="uk-navbar-brand">何夕的个人主页</a>
-        <ul class="uk-navbar-nav">
-            <li data-url="blogs"><a href="/"><i class="uk-icon-home"></i> 日志</a></li>
-            <li><a target="_blank"
-                   href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000"><i
-                    class="uk-icon-book"></i> 教程</a></li>
-            <li><a target="_blank" href="https://github.com/michaelliao/awesome-python3-webapp"><i
-                    class="uk-icon-code"></i> 源码</a></li>
-        </ul>
-        <div class="uk-navbar-flip">
+<div data-uk-sticky>
+    <nav class="uk-navbar uk-navbar-attached uk-margin-bottom ">
+        <div class="uk-container uk-container-center" >
+            <a href="/" class="uk-navbar-brand">何夕的个人主页</a>
             <ul class="uk-navbar-nav">
-                {% if __user__ %}
-                <li class="uk-parent" data-uk-dropdown>
-                    <a href="#0"><i class="uk-icon-user"></i> {{ __user__.name }}</a>
-                    <div class="uk-dropdown uk-dropdown-navbar">
-                        <ul class="uk-nav uk-nav-navbar">
-                            <li><a href="/signout"><i class="uk-icon-sign-out"></i> 登出</a></li>
-                            {% if __user__.admin %}
-                            <li><a href="/manage/blogs"><i class="uk-icon-sign-out"></i> 管理日志</a></li>
-                            <li><a href="/manage/users"><i class="uk-icon-sign-out"></i> 管理用户</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </li>
-                {% else %}
-                <li><a href="/signin"><i class="uk-icon-sign-in"></i> 登陆</a></li>
-                <li><a href="/register"><i class="uk-icon-edit"></i> 注册</a></li>
-                {% endif %}
+                <li data-url="blogs"><a href="/"><i class="uk-icon-home"></i> 日志</a></li>
+                <li><a target="_blank"
+                       href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000"><i
+                        class="uk-icon-book"></i> 教程</a></li>
+                <li><a target="_blank" href="https://github.com/michaelliao/awesome-python3-webapp"><i
+                        class="uk-icon-code"></i> 源码</a></li>
             </ul>
+            <div class="uk-navbar-flip">
+                <ul class="uk-navbar-nav">
+                    {% if __user__ %}
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a href="#0"><i class="uk-icon-user"></i> {{ __user__.name }}</a>
+                        <div class="uk-dropdown uk-dropdown-navbar">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a href="/signout"><i class="uk-icon-sign-out"></i> 登出</a></li>
+                                {% if __user__.admin %}
+                                <li><a href="/manage/blogs"><i class="uk-icon-sign-out"></i> 管理日志</a></li>
+                                <li><a href="/manage/users"><i class="uk-icon-sign-out"></i> 管理用户</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li><a href="/signin"><i class="uk-icon-sign-in"></i> 登陆</a></li>
+                    <li><a href="/register"><i class="uk-icon-edit"></i> 注册</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
+    </nav>
+</div>
 <div class="uk-container uk-container-center">
     <div class="uk-grid">
         <!-- content -->
