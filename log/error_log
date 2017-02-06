@@ -1,0 +1,2 @@
+2017/02/06 08:46:58 [error] 14138#14138: *2977 connect() failed (111: Connection refused) while connecting to upstream, client: 113.240.250.156, server: , request: "GET / HTTP/1.0", upstream: "http://127.0.0.1:9000/"
+2017/02/06 08:47:12 [error] 14138#14138: *2979 connect() failed (111: Connection refused) while connecting to upstream, client: 113.240.250.156, server: , request: "GET / HTTP/1.0", upstream: "http://127.0.0.1:9000/"

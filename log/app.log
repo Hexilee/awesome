@@ -74,3 +74,956 @@ INFO:root:add route GET /signout => signout(request)
 INFO:root:load my jinja...
 INFO:root:set jinja templates path: /srv/awesome/www/templates
 INFO:root:Server started at http://123.206.182.83:9000...
+INFO:root:Request: GET /cache/global/img/gs.gif
+INFO:root:Check user: GET | /cache/global/img/gs.gif
+INFO:root:Response handler...
+INFO:aiohttp.access:163.172.134.70 - - [05/Feb/2017:15:57:54 +0000] "GET http://www.baidu.com/cache/global/img/gs.gif HTTP/1.1" 404 14 "-" "Mozilla"
+INFO:root:found model: Users (table: users)
+INFO:root:  found mapping: image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: password ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: email ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: admin ==> <BooleanField, boolean:None>
+INFO:root:found model: Blogs (table: blogs)
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: summary ==> <StringField, varchar(200):None>
+INFO:root:found model: Comments (table: comments)
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: blog_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+DEBUG:asyncio:Using selector: EpollSelector
+INFO:root:creating database connection pool...
+INFO:root:add static /static => /srv/awesome/www/static
+INFO:root:add route GET /api/blogs => api_blogs(page)
+INFO:root:add route POST /api/blogs => api_create_blog(request, name, summary, content)
+INFO:root:add route GET /api/blogs/{id} => api_get_blog(id)
+INFO:root:add route POST /api/users => api_register_user(email, name, password)
+INFO:root:add route POST /api/authenticate => authenticate(email, password)
+INFO:root:add route GET /blogs/{id} => get_blog(id)
+INFO:root:add route GET / => index(request, page)
+INFO:root:add route GET /manage/blogs => manage_blogs(page)
+INFO:root:add route GET /manage/blogs/create => manage_create_blogs(id)
+INFO:root:add route GET /register => register()
+INFO:root:add route GET /signin => signin()
+INFO:root:add route GET /signout => signout(request)
+INFO:root:load my jinja...
+INFO:root:set jinja templates path: /srv/awesome/www/templates
+INFO:root:Server started at http://127.0.0.1:9000...
+[2017-02-06 11:00:24 +0800] [20334] [INFO] Starting gunicorn 19.6.0
+[2017-02-06 11:00:24 +0800] [20334] [INFO] Listening at: http://127.0.0.1:8000 (20334)
+[2017-02-06 11:00:24 +0800] [20334] [INFO] Using worker: sync
+[2017-02-06 11:00:24 +0800] [20337] [INFO] Booting worker with pid: 20337
+[2017-02-06 11:00:24 +0800] [20337] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 357, in import_app
+    __import__(module)
+ImportError: No module named '/srv/awesome/www/app'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/arbiter.py", line 557, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 136, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 361, in import_app
+    raise ImportError(msg % (module.rsplit(".", 1)[0], obj))
+ImportError: Failed to find application, did you mean '/srv/awesome/www/app:application'?
+[2017-02-06 11:00:24 +0800] [20337] [INFO] Worker exiting (pid: 20337)
+[2017-02-06 11:00:24 +0800] [20334] [INFO] Shutting down: Master
+[2017-02-06 11:00:24 +0800] [20334] [INFO] Reason: Worker failed to boot.
+[2017-02-06 11:00:26 +0800] [20338] [INFO] Starting gunicorn 19.6.0
+[2017-02-06 11:00:26 +0800] [20338] [INFO] Listening at: http://127.0.0.1:8000 (20338)
+[2017-02-06 11:00:26 +0800] [20338] [INFO] Using worker: sync
+[2017-02-06 11:00:26 +0800] [20341] [INFO] Booting worker with pid: 20341
+[2017-02-06 11:00:26 +0800] [20341] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 357, in import_app
+    __import__(module)
+ImportError: No module named '/srv/awesome/www/app'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/arbiter.py", line 557, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 136, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 361, in import_app
+    raise ImportError(msg % (module.rsplit(".", 1)[0], obj))
+ImportError: Failed to find application, did you mean '/srv/awesome/www/app:application'?
+[2017-02-06 11:00:26 +0800] [20341] [INFO] Worker exiting (pid: 20341)
+[2017-02-06 11:00:26 +0800] [20338] [INFO] Shutting down: Master
+[2017-02-06 11:00:26 +0800] [20338] [INFO] Reason: Worker failed to boot.
+[2017-02-06 11:00:28 +0800] [20342] [INFO] Starting gunicorn 19.6.0
+[2017-02-06 11:00:28 +0800] [20342] [INFO] Listening at: http://127.0.0.1:8000 (20342)
+[2017-02-06 11:00:28 +0800] [20342] [INFO] Using worker: sync
+[2017-02-06 11:00:28 +0800] [20345] [INFO] Booting worker with pid: 20345
+[2017-02-06 11:00:28 +0800] [20345] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 357, in import_app
+    __import__(module)
+ImportError: No module named '/srv/awesome/www/app'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/arbiter.py", line 557, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 136, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 361, in import_app
+    raise ImportError(msg % (module.rsplit(".", 1)[0], obj))
+ImportError: Failed to find application, did you mean '/srv/awesome/www/app:application'?
+[2017-02-06 11:00:28 +0800] [20345] [INFO] Worker exiting (pid: 20345)
+[2017-02-06 11:00:28 +0800] [20342] [INFO] Shutting down: Master
+[2017-02-06 11:00:28 +0800] [20342] [INFO] Reason: Worker failed to boot.
+[2017-02-06 11:00:31 +0800] [20358] [INFO] Starting gunicorn 19.6.0
+[2017-02-06 11:00:31 +0800] [20358] [INFO] Listening at: http://127.0.0.1:8000 (20358)
+[2017-02-06 11:00:31 +0800] [20358] [INFO] Using worker: sync
+[2017-02-06 11:00:31 +0800] [20361] [INFO] Booting worker with pid: 20361
+[2017-02-06 11:00:31 +0800] [20361] [ERROR] Exception in worker process
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 357, in import_app
+    __import__(module)
+ImportError: No module named '/srv/awesome/www/app'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/arbiter.py", line 557, in spawn_worker
+    worker.init_process()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 126, in init_process
+    self.load_wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/workers/base.py", line 136, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/usr/local/lib/python3.5/dist-packages/gunicorn/util.py", line 361, in import_app
+    raise ImportError(msg % (module.rsplit(".", 1)[0], obj))
+ImportError: Failed to find application, did you mean '/srv/awesome/www/app:application'?
+[2017-02-06 11:00:31 +0800] [20361] [INFO] Worker exiting (pid: 20361)
+[2017-02-06 11:00:31 +0800] [20358] [INFO] Shutting down: Master
+[2017-02-06 11:00:31 +0800] [20358] [INFO] Reason: Worker failed to boot.
+python3: can't open file '/srv/awesome/www/app': [Errno 2] No such file or directory
+python3: can't open file '/srv/awesome/www/app': [Errno 2] No such file or directory
+python3: can't open file '/srv/awesome/www/app': [Errno 2] No such file or directory
+python3: can't open file '/srv/awesome/www/app': [Errno 2] No such file or directory
+INFO:root:found model: Users (table: users)
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: password ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: email ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: admin ==> <BooleanField, boolean:None>
+INFO:root:found model: Blogs (table: blogs)
+INFO:root:  found mapping: summary ==> <StringField, varchar(200):None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:found model: Comments (table: comments)
+INFO:root:  found mapping: blog_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+DEBUG:asyncio:Using selector: EpollSelector
+INFO:root:creating database connection pool...
+INFO:root:add static /static => /srv/awesome/www/static
+INFO:root:add route GET /api/blogs => api_blogs(page)
+INFO:root:add route POST /api/blogs => api_create_blog(request, name, summary, content)
+INFO:root:add route GET /api/blogs/{id} => api_get_blog(id)
+INFO:root:add route POST /api/users => api_register_user(email, name, password)
+INFO:root:add route POST /api/authenticate => authenticate(email, password)
+INFO:root:add route GET /blogs/{id} => get_blog(id)
+INFO:root:add route GET / => index(request, page)
+INFO:root:add route GET /manage/blogs => manage_blogs(page)
+INFO:root:add route GET /manage/blogs/create => manage_create_blogs(id)
+INFO:root:add route GET /register => register()
+INFO:root:add route GET /signin => signin()
+INFO:root:add route GET /signout => signout(request)
+INFO:root:load my jinja...
+INFO:root:set jinja templates path: /srv/awesome/www/templates
+INFO:root:Server started at http://127.0.0.1:9000...
+INFO:root:found model: Users (table: users)
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: password ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: email ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: admin ==> <BooleanField, boolean:None>
+INFO:root:  found mapping: image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:found model: Blogs (table: blogs)
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: summary ==> <StringField, varchar(200):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:found model: Comments (table: comments)
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: blog_id ==> <StringField, varchar(50):None>
+DEBUG:asyncio:Using selector: EpollSelector
+INFO:root:creating database connection pool...
+INFO:root:add static /static => /srv/awesome/www/static
+INFO:root:add route GET /api/blogs => api_blogs(page)
+INFO:root:add route POST /api/blogs => api_create_blog(request, name, summary, content)
+INFO:root:add route GET /api/blogs/{id} => api_get_blog(id)
+INFO:root:add route POST /api/users => api_register_user(email, name, password)
+INFO:root:add route POST /api/authenticate => authenticate(email, password)
+INFO:root:add route GET /blogs/{id} => get_blog(id)
+INFO:root:add route GET / => index(request, page)
+INFO:root:add route GET /manage/blogs => manage_blogs(page)
+INFO:root:add route GET /manage/blogs/create => manage_create_blogs(id)
+INFO:root:add route GET /register => register()
+INFO:root:add route GET /signin => signin()
+INFO:root:add route GET /signout => signout(request)
+INFO:root:load my jinja...
+INFO:root:set jinja templates path: /srv/awesome/www/templates
+INFO:root:Server started at http://0.0.0.0:9000...
+INFO:root:found model: Users (table: users)
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: password ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: admin ==> <BooleanField, boolean:None>
+INFO:root:  found mapping: email ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:found model: Blogs (table: blogs)
+INFO:root:  found mapping: name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: summary ==> <StringField, varchar(200):None>
+INFO:root:found model: Comments (table: comments)
+INFO:root:  found mapping: user_name ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: content ==> <TextField, mediumtext:None>
+INFO:root:  found mapping: user_id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: user_image ==> <StringField, varchar(500):None>
+INFO:root:  found mapping: id ==> <StringField, varchar(50):None>
+INFO:root:  found mapping: created_at ==> <FloatField, real:None>
+INFO:root:  found mapping: blog_id ==> <StringField, varchar(50):None>
+DEBUG:asyncio:Using selector: EpollSelector
+INFO:root:creating database connection pool...
+INFO:root:add static /static => /srv/awesome/www/static
+INFO:root:add route GET /api/blogs => api_blogs(page)
+INFO:root:add route POST /api/blogs => api_create_blog(request, name, summary, content)
+INFO:root:add route GET /api/blogs/{id} => api_get_blog(id)
+INFO:root:add route POST /api/users => api_register_user(email, name, password)
+INFO:root:add route POST /api/authenticate => authenticate(email, password)
+INFO:root:add route GET /blogs/{id} => get_blog(id)
+INFO:root:add route GET / => index(request, page)
+INFO:root:add route GET /manage/blogs => manage_blogs(page)
+INFO:root:add route GET /manage/blogs/create => manage_create_blogs(id)
+INFO:root:add route GET /register => register()
+INFO:root:add route GET /signin => signin()
+INFO:root:add route GET /signout => signout(request)
+INFO:root:load my jinja...
+INFO:root:set jinja templates path: /srv/awesome/www/templates
+INFO:root:Server started at http://0.0.0.0:9000...
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:36:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:36:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:36:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:36:45 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /signin
+INFO:root:Check user: GET | /signin
+INFO:root:Response handler...
+INFO:root:call with args: {}
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:36:53 +0000] "GET /signin HTTP/1.0" 200 3287 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: POST /api/authenticate
+INFO:root:Check user: POST | /api/authenticate
+INFO:root:Response handler...
+INFO:root:call with args: {'email': 'qingxuanshabao@gmail.com', 'password': '8711be1a4bbc5f7287f5b459cf6453bdb279ade5'}
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where email=?
+INFO:root:rows returned: 0
+ERROR:aiohttp.server:Error handling request
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/aiohttp/web_server.py", line 61, in handle_request
+    resp = yield from self._handler(request)
+  File "/usr/local/lib/python3.5/dist-packages/aiohttp/web.py", line 249, in _handle
+    resp = yield from handler(request)
+  File "/srv/awesome/www/app.py", line 47, in logger
+    return await handler(request)
+  File "/srv/awesome/www/app.py", line 64, in auth
+    return await handler(request)
+  File "/srv/awesome/www/app.py", line 72, in response
+    r = await handler(request)
+  File "/usr/local/lib/python3.5/dist-packages/aiohttp/web_urldispatcher.py", line 113, in handler_wrapper
+    result = yield from result
+  File "/srv/awesome/www/coroweb.py", line 167, in __call__
+    r = await self._func(**kw)
+  File "/usr/lib/python3.5/asyncio/coroutines.py", line 219, in coro
+    res = yield from await_meth()
+  File "/srv/awesome/www/handlers.py", line 107, in authenticate
+    raise APIValueError('email', 'Email not exist')  # TODO: 将错误返回至前端页面
+apis.APIValueError: Email not exist
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:37:12 +0000] "POST /api/authenticate HTTP/1.0" 500 141 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:37:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:37:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:37:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /register
+INFO:root:Check user: GET | /register
+INFO:root:Response handler...
+INFO:root:call with args: {}
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:38:35 +0000] "GET /register HTTP/1.0" 200 6331 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:38:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:38:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:38:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: POST /api/users
+INFO:root:Check user: POST | /api/users
+INFO:root:Response handler...
+INFO:root:call with args: {'name': '何夕', 'email': 'qingxuanshabao@gmail.com', 'password': '8711be1a4bbc5f7287f5b459cf6453bdb279ade5'}
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where email=?
+INFO:root:rows returned: 0
+DEBUG:root:using default value for admin: False
+DEBUG:root:using default value for created_at: 1486352358.5734186
+INFO:root:SQL: insert into `users` (`name`, `password`, `image`, `admin`, `email`, `created_at`, `id`) values (?, ?, ?, ?, ?, ?, ?)
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:39:18 +0000] "POST /api/users HTTP/1.0" 200 274 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where `id`=?
+INFO:root:rows returned: 1
+INFO:root:set current user: qingxuanshabao@gmail.com
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:39:18 +0000] "GET / HTTP/1.0" 200 4402 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:39:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:39:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:39:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:40:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:40:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:40:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:41:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:41:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:41:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:42:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:42:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:42:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:43:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:43:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:43:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:44:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:44:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:44:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where `id`=?
+INFO:root:rows returned: 1
+INFO:root:set current user: qingxuanshabao@gmail.com
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:41 +0000] "GET / HTTP/1.0" 200 4653 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /manage/blogs
+INFO:root:Check user: GET | /manage/blogs
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where `id`=?
+INFO:root:rows returned: 1
+INFO:root:set current user: qingxuanshabao@gmail.com
+INFO:root:Response handler...
+INFO:root:call with args: {}
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:44 +0000] "GET /manage/blogs HTTP/1.0" 200 5918 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /api/blogs
+INFO:root:Check user: GET | /api/blogs
+INFO:root:SQL: select `id`, `name`, `password`, `image`, `admin`, `email`, `created_at` from `users` where `id`=?
+INFO:root:rows returned: 1
+INFO:root:set current user: qingxuanshabao@gmail.com
+INFO:root:Response handler...
+INFO:root:call with args: {'page': '1'}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:45:44 +0000] "GET /api/blogs?page=1 HTTP/1.0" 200 158 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:46:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:46:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:46:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:47:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:47:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:47:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:48:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:48:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:48:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:49:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:49:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:49:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:50:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:50:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:50:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:51:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:51:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:51:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:52:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:52:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:52:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:53:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:53:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:53:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:54:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:54:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:54:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:55:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:55:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:55:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:56:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:56:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:56:43 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:57:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:57:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:57:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:Request: GET /
+INFO:root:Check user: GET | /
+INFO:root:Response handler...
+INFO:root:call with args: {'request': <Request GET / >}
+INFO:root:SQL: select count(id) _num_ from `blogs`
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:58:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:58:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
+INFO:root:rows returned: 1
+DEBUG:root:[{'_num_': 0}]
+INFO:aiohttp.access:127.0.0.1 - - [06/Feb/2017:03:58:42 +0000] "GET / HTTP/1.0" 200 4113 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36"
