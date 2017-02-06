@@ -1,21 +1,19 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
-
-"""
+'''
 Deployment toolkit.
-"""
+'''
 
 import os, re
 
 from datetime import datetime
 from fabric.api import *
-
 __author__ = 'Li Chenxi'
+
 env.user = 'ubuntu'
 env.sudo_user = 'root'
-env.hosts = ['123.206.183.82']
+env.hosts = ['123.206.182.83']
 
 db_user = 'root'
 db_password = 'Qxsb19981005'
@@ -44,7 +42,7 @@ def backup():
     with cd('/tmp'):
         run(
             'mysqldump --user=%s --password=%s --skip-opt --add-drop-table --default-character-set=utf8 --quick awesome > %s' % (
-                db_user, db_password, f))
+            db_user, db_password, f))
         run('tar -czvf %s.tar.gz %s' % (f, f))
         get('%s.tar.gz' % f, '%s/backup/' % _current_path())
         run('rm -f %s' % f)
@@ -66,7 +64,7 @@ def build():
 
 
 def deploy():
-    newdir = 'www-%s' % _now()
+    newdir = 'www-%s:%s' % (_now(), input('commit: '))
     run('rm -f %s' % _REMOTE_TMP_TAR)
     put('dist/%s' % _TAR_FILE, _REMOTE_TMP_TAR)
     with cd(_REMOTE_BASE_DIR):
@@ -74,10 +72,10 @@ def deploy():
     with cd('%s/%s' % (_REMOTE_BASE_DIR, newdir)):
         sudo('tar -xzvf %s' % _REMOTE_TMP_TAR)
     with cd(_REMOTE_BASE_DIR):
-        sudo('rm -f www')
+        sudo('rm -rf www')
         sudo('ln -s %s www' % newdir)
-        sudo('chown www-data:www-data www')
-        sudo('chown -R www-data:www-data %s' % newdir)
+        sudo('chown root:root www')
+        sudo('chown -R root:root %s' % newdir)
     with settings(warn_only=True):
         sudo('supervisorctl stop awesome')
         sudo('supervisorctl start awesome')
@@ -125,9 +123,9 @@ def rollback():
             print('Rollback cancelled.')
             return
         print('Start rollback...')
-        sudo('rm -f www')
+        sudo('rm -rf www')
         sudo('ln -s %s www' % old)
-        sudo('chown www-data:www-data www')
+        sudo('chown root:root www')
         with settings(warn_only=True):
             sudo('supervisorctl stop awesome')
             sudo('supervisorctl start awesome')
@@ -171,7 +169,7 @@ def restore2local():
         'drop database if exists awesome;',
         'create database awesome;',
         'grant select, insert, update, delete on awesome.* to \'%s\'@\'localhost\' identified by \'%s\';' % (
-            db_user, db_password)
+        db_user, db_password)
     ]
     for sql in sqls:
         local(r'mysql -uroot -p%s -e "%s"' % (p, sql))
@@ -179,4 +177,4 @@ def restore2local():
         local('tar zxvf %s' % restore_file)
     local(r'mysql -uroot -p%s awesome < backup/%s' % (p, restore_file[:-7]))
     with lcd(backup_dir):
-        local('rm -f %s' % restore_file[:-7])
+        local('rm -rf %s' % restore_file[:-7])
