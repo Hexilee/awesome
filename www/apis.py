@@ -64,7 +64,9 @@ class Page(object):
                    self.item_count, self.page_size, self.page_count, self.offset,
                    self.limit, self.page_index, self.has_next, self.has_previous
                )
+
     __repr__ = __str__
+
 
 class APIError(Exception):
     """
@@ -91,3 +93,12 @@ class APINotFound(APIError):
 class APIPermissionError(APIError):
     def __init__(self, message=''):
         super(APIPermissionError, self).__init__('Error: request denied', 'permission', message)
+
+
+class APIResourceNotFoundError(APIError):
+    """
+     Indicate the resource was not found. The data specifies the resource name.
+    """
+
+    def __init__(self, field, message=''):
+        super(APIResourceNotFoundError, self).__init__('value:notfound', field, message)

@@ -13,7 +13,7 @@ import markdown2
 from coroweb import get, post
 from aiohttp import web
 from models import Users, Blogs, next_id, Comments
-from apis import APIError, APIValueError, APINotFound, APIPermissionError, Page
+from apis import APIError, APIValueError, APINotFound, APIPermissionError, Page, APIResourceNotFoundError
 from config import config
 
 __author__ = 'Li Chenxi'
@@ -199,8 +199,8 @@ def manage_create_blogs(*, id=''):
     }
 
 
-@get('/blogs/{id}')
-async def get_blog(*, id):
+@get('/blog/{id}')
+async def get_blog(request, *, id):
     blog = await Blogs.find(id)
     comments = await Comments.findall(where='blog_id=?', args=[id, ], orderby='created_at desc')
     for c in comments:
@@ -209,7 +209,8 @@ async def get_blog(*, id):
     return {
         '__template__': 'blog.html',
         'blog': blog,
-        'comments': comments
+        'comments': comments,
+        '__user__': request.__user__
     }
 
 
@@ -237,3 +238,19 @@ async def api_create_blog(request, *, name, summary, content):
                  name=name.strip(), summary=summary.strip(), content=content.strip())
     await blog.save()
     return blog
+
+
+@post('/api/blog/{blog_id}/comments')
+async def api_blog_comments(request, *, blog_id, content):
+    user = request.__user__
+    if user is None:
+        raise APIPermissionError('please sign in first')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty! ')
+    blog = await Blogs.find(blog_id)
+    if blog is None:
+        raise APIResourceNotFoundError('Blog')
+    comment = Comments(id=next_id(), blog_id=blog_id, user_id=user.id, user_name=user.name, user_image=user.image,
+                       content=content.strip())
+    await content.save()
+    return comment
