@@ -19,8 +19,22 @@
                 if (err) {
                     return $form.showFormError(err);
                 }
-                refresh()
+                refresh();
             });
+        });
+
+        var $delete = $('#del-comment');
+        $delete.click(function (event) {
+            event.preventDefault();
+            if (confirm('确定要删除这条评论？删除后不可恢复！')) {
+                postJSON('/api/comments/' + this.name + '/delete', function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        return alert(err.message || err.error || err);
+                    }
+                    refresh();
+                });
+            }
         });
     });
 </script>
@@ -75,6 +89,10 @@
                     <h4 class="uk-comment-title">{{ comment.user_name }} {% if comment.user_id==blog.user_id %}(作者){%
                         endif %}</h4>
                     <p class="uk-comment-meta">{{ comment.created_at|datetime }}</p>
+                    {% if __user__.admin or __user__.id == comment.user_id %}
+                    <a target="_blank" href="#0" id="del-comment" name="{{ comment.id }}"><p class="uk-comment-meta">
+                        删除</p></a>
+                    {% endif %}
                 </header>
                 <div class="uk-comment-body">
                     {{ comment.html_content|safe }}
@@ -88,7 +106,7 @@
 
 </div>
 
-<div class="uk-width-medium-1-4">
+<div class="uk-width-medium-1-4"  >
     <div class="uk-panel uk-panel-box">
         <div class="uk-text-center">
             <img class="uk-border-circle" width="120" height="120" src="{{ blog.user_image }}">
@@ -106,4 +124,3 @@
 </div>
 
 {% endblock %}
-Contact GitHub API Training Shop Blog About

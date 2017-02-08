@@ -290,3 +290,23 @@ async def api_blog_comments(request, *, blog_id, content):
                        content=content.strip())
     await comment.save()
     return comment
+
+
+@post('/api/comments/{comment_id}/delete')
+async def api_comments_delete(request, *, comment_id):
+    check_admin(request)
+    comment = await Comments.find(comment_id)
+    if comment is None:
+        raise APIResourceNotFoundError('Comments')
+    await Comments.delete(comment_id)
+    return comment
+
+
+@get('/manage/comments')
+async def manage_comments(request, *, page=1):
+    return {
+        '__template__': 'manage_comments.html',
+        'page_index': get_page_index(page),
+        '__user__': request.__user__
+    }
+
