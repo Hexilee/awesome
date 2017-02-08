@@ -145,7 +145,7 @@ async def api_register_user(*, email, name, password):
     sha1_password = '%s:%s' % (uid, password)  # 二次加密
     user = Users(id=uid, name=name.strip(), email=email,
                  password=hashlib.sha1(sha1_password.encode('utf-8')).hexdigest(),
-                 image='http://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest())
+                 image='https://www.gravatar.com/avatar/%s?d=mm&s=120' % hashlib.md5(email.encode('utf-8')).hexdigest())
     await user.save()
 
     # make session cookie
