@@ -333,14 +333,14 @@ async def api_users(*, page=1):
     if num_users == 0:
         return dict(page=p, users=(), admins=())
     if not num_admins > p.offset:
-        users = await Users.findall(where='admin=false', orderby='created_at desc',
+        users = await Users.findall(where='admin=false', orderby='email',
                                     limit=(p.offset - num_admins, p.limit))
         return dict(page=p, users=users, admins=())
-    admins = await Users.findall(where='admin=true', orderby='name desc', limit=(p.offset, p.limit))
+    admins = await Users.findall(where='admin=true', orderby='email', limit=(p.offset, p.limit))
     len_admins = len(admins)
     if len_admins == p.limit:
         return dict(page=p, users=(), admins=admins)
-    users = await Users.findall(where='admin=false', orderby='name desc', limit=(0, p.limit - len_admins))
+    users = await Users.findall(where='admin=false', orderby='email', limit=(0, p.limit - len_admins))
     return dict(page=p, users=users, admins=admins)
 
 
