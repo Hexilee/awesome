@@ -172,6 +172,7 @@ def get_page_index(page_str):
 
 @get('/manage/blogs')
 async def manage_blogs(request, *, page=1):
+    check_admin(request)
     return {
         '__template__': 'manage_blogs.html',
         'page_index': get_page_index(page),
@@ -304,9 +305,40 @@ async def api_comments_delete(request, *, comment_id):
 
 @get('/manage/comments')
 async def manage_comments(request, *, page=1):
+    check_admin(request)
     return {
         '__template__': 'manage_comments.html',
         'page_index': get_page_index(page),
         '__user__': request.__user__
     }
 
+
+@get('/manage/users')  # 发送用户管理界面
+async def manage_users(request, *, page=1):
+    check_admin(request)
+    return {
+        '__template__': 'manage_users.html',
+        'page_index': get_page_index(page),
+        '__user__': request.__user__,
+        'host_email': 'qingxuanshabao@gmail.com'
+    }
+
+
+@get('/api/users')  # 发送json到blog管理页面
+async def api_users(*, page=1):
+    page_index = get_page_index(page)
+    num_admins = await Users.findnumber('count(id)', where='admin=true')  # 管理员人数
+    num_users = await Users.findnumber('count(id)')  # 总人数
+    p = Page(num_users, page_index)
+    if num_users == 0:
+        return dict(page=p, users=(), admins=())
+    if not num_admins > p.offset:
+        users = await Users.findall(where='admin=false', orderby='created_at desc',
+                                    limit=(p.offset - num_admins, p.limit))
+        return dict(page=p, users=users, admins=())
+    admins = await Users.findall(where='admin=true', orderby='name desc', limit=(p.offset, p.limit))
+    len_admins = len(admins)
+    if len_admins == p.limit:
+        return dict(page=p, users=(), admins=admins)
+    users = await Users.findall(where='admin=false', orderby='name desc', limit=(0, p.limit - len_admins))
+    return dict(page=p, users=users, admins=admins)

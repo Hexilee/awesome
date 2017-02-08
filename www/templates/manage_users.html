@@ -1,0 +1,135 @@
+{% extends '__base__.html' %}
+
+{% block title %}用户{% endblock %}
+
+{% block beforehead %}
+
+<script>
+    function initVM(data) {
+        var vm = new Vue({
+            el: '#vm',
+            data: {
+                users: data.users,
+                page: data.page,
+                admins: data.admins
+            },
+            methods: {
+                admin_manage: function (user) {
+                    postJSON('/api/admin/' + user.id + '/manage', function(err, result){
+                        if(err) {
+                            return alert(err.message || err.error || err);
+                        }
+                        refresh();
+                    });
+                },
+                delete_user: function (user) {
+                    if (confirm('确定要删除"' + user.name + '"？删除后不可恢复！')) {
+                        postJSON('/api/users/' + user.id + '/delete', function (err, result) {
+                            if (err) {
+                                return alert(err.message || err.error || err);  //返回错误？
+                            }
+                            refresh();
+                        });
+                    }
+
+                }
+            }
+        });
+        $('#vm').show()
+    }
+
+    $(function () {
+        getJSON('/api/users', {
+            page: '{{ page_index }}'
+        }, function (err, results) {
+            if (err) {
+                return fatal(err);  //awesome.js: fatal的作用
+            }
+            $('#loading').hide();
+            initVM(results)
+        });
+    });
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="uk-width-1-1 uk-margin-bottom">
+    <div class="uk-panel uk-panel-box">
+        <ul class="uk-breadcrumb">
+            <li><a href="/manage/comments">评论</a></li>
+            <li><a href="/manage/blogs">日志</a></li>
+            <li class="uk-active"><span>用户</span></li>
+        </ul>
+    </div>
+</div>
+
+<div id="error" class="uk-width-1-1">
+</div>
+
+<div id="loading" class="uk-width-1-1 uk-text-center">
+    <span><i class="uk-icon-spinner uk-icon-medium uk-icon-spin"></i> 正在加载...</span>
+</div>
+
+<div id="vm" class="uk-width-1-1">
+    <a href="/register" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> 新用户</a>
+
+    <table class="uk-table uk-table-hover">
+        <thead>
+        <tr>
+            <th class="uk-width-4-10">用户邮箱</th>
+            {% if __user__.email == host_email %}
+            <th class="uk-width-1-10">管理员</th>
+            {% endif %}
+            <th class="uk-width-2-10">用户名</th>
+            <th class="uk-width-2-10">注册时间</th>
+            <th class="uk-width-1-10">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if __user__.email == host_email %}
+        <tr v-repeat="admin: admins">
+            <td>
+                <a target="_blank" v-attr="href: '/user/'+admin.email" v-text="admin.email"></a>
+            </td>
+            <td>
+                <p>是/<a href="#0" v-on="click: admin_manage(admin)"><i class="uk-icon-minus"></i></a></p>
+            </td>
+            <td>
+                <a target="_blank" v-attr="href: '/user/'+damin.email" v-text="admin.name"></a>
+            </td>
+            <td>
+                <span v-text="admin.created_at.toDateTime()"></span>
+            </td>
+            <td>
+                <a href="#0" v-on="click: delete_user(admin)"><i class="uk-icon-trash-o"></i></a>
+            </td>
+        </tr>
+        {% endif %}
+        <tr v-repeat="user: users">
+            <td>
+                <a target="_blank" v-attr="href: '/user/'+user.email" v-text="user.email"></a>
+            </td>
+            {% if __user__.email == host_email %}
+            <td>
+                <p>否/<a href="#0" v-on="click: admin_manage(user)"><i class="uk-icon-plus"></i></a></p>
+            </td>
+            {% endif %}
+            <td>
+                <a target="_blank" v-attr="href: '/user/'+user.email" v-text="user.name"></a>
+            </td>
+            <td>
+                <span v-text="user.created_at.toDateTime()"></span>
+            </td>
+            <td>
+                <a href="#0" v-on="click: delete_user(user)"><i class="uk-icon-trash-o"></i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div v-component="pagination" v-with="page"></div>
+</div>
+
+{% endblock %}
