@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="030e6310-21a3-4792-bd90-f63584c0152a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/dist-awesome.tar.gz" afterPath="$PROJECT_DIR$/dist/dist-awesome.tar.gz" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/manage_blog_edit.html" afterPath="$PROJECT_DIR$/www/templates/manage_blog_edit.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/handlers.py" afterPath="$PROJECT_DIR$/www/handlers.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="handlers.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="handlers.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/handlers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="230" column="36" lean-forward="true" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
+            <state relative-caret-position="79">
+              <caret line="247" column="25" lean-forward="false" selection-start-line="247" selection-start-column="25" selection-end-line="247" selection-end-column="25" />
               <folding>
                 <element signature="e#86#97#0" expanded="true" />
               </folding>
@@ -64,7 +64,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manage_blog_edit.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="manage_blog_edit.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/manage_blog_edit.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="289">
@@ -143,9 +143,9 @@
         <option value="$PROJECT_DIR$/www/templates/__base__.html" />
         <option value="$PROJECT_DIR$/www/templates/blog.html" />
         <option value="$PROJECT_DIR$/www/apis.py" />
-        <option value="$PROJECT_DIR$/www/handlers.py" />
         <option value="$PROJECT_DIR$/www/templates/manage_blogs.html" />
         <option value="$PROJECT_DIR$/www/templates/manage_blog_edit.html" />
+        <option value="$PROJECT_DIR$/www/handlers.py" />
       </list>
     </option>
   </component>
@@ -727,16 +727,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/handlers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="230" column="36" lean-forward="true" selection-start-line="230" selection-start-column="36" selection-end-line="230" selection-end-column="36" />
-          <folding>
-            <element signature="e#86#97#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/manage_blogs.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -750,6 +740,16 @@
         <state relative-caret-position="289">
           <caret line="18" column="43" lean-forward="true" selection-start-line="18" selection-start-column="43" selection-end-line="18" selection-end-column="43" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/handlers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="79">
+          <caret line="247" column="25" lean-forward="false" selection-start-line="247" selection-start-column="25" selection-end-line="247" selection-end-column="25" />
+          <folding>
+            <element signature="e#86#97#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

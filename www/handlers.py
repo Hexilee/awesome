@@ -171,10 +171,11 @@ def get_page_index(page_str):
 
 
 @get('/manage/blogs')
-async def manage_blogs(*, page=1):
+async def manage_blogs(request, *, page=1):
     return {
         '__template__': 'manage_blogs.html',
-        'page_index': get_page_index(page)
+        'page_index': get_page_index(page),
+        '__user__': request.__user__
     }
 
 
@@ -236,7 +237,7 @@ async def blog_delete(*, blog_id, request):
 
 
 @get('/manage/blogs/create')
-def manage_create_blogs(*, id=''):  # 如果加了id，则为修改日志
+def manage_create_blogs(request, *, id=''):  # 如果加了id，则为修改日志
     if id:
         action = '/api/blogs/%s' % id
     else:
@@ -244,8 +245,8 @@ def manage_create_blogs(*, id=''):  # 如果加了id，则为修改日志
     return {
         '__template__': 'manage_blog_edit.html',
         'id': id,
-        'action': action
-
+        'action': action,
+        '__user__': request.__user__
     }
 
 
