@@ -96,7 +96,7 @@ def signin():
     }
 
 
-@post('/api/authenticate')
+@post('/api/authenticate')  # 登录认证
 async def authenticate(*, email, password):
     if not email:
         raise APIValueError('email', 'Invalid email')
@@ -129,7 +129,7 @@ def signout(request):
     return r
 
 
-@post('/api/users')
+@post('/api/users')  # 注册认证
 async def api_register_user(*, email, name, password):
     if not name or not name.strip():
         raise ValueError('name')
@@ -170,7 +170,7 @@ def get_page_index(page_str):
     return p
 
 
-@get('/manage/blogs')
+@get('/manage/blogs')  # blog管理页面
 async def manage_blogs(request, *, page=1):
     check_admin(request)
     return {
@@ -237,7 +237,7 @@ async def blog_delete(*, blog_id, request):
     return blog
 
 
-@get('/manage/blogs/create')
+@get('/manage/blogs/create')  # 编辑日志界面
 def manage_create_blogs(request, *, id=''):  # 如果加了id，则为修改日志
     if id:
         action = '/api/blogs/%s' % id
@@ -251,7 +251,7 @@ def manage_create_blogs(request, *, id=''):  # 如果加了id，则为修改日�
     }
 
 
-@get('/blog/{id}')
+@get('/blog/{id}')  # 阅读日志界面
 async def get_blog(request, *, id):
     blog = await Blogs.find(id)
     comments = await Comments.findall(where='blog_id=?', args=[id, ], orderby='created_at desc')
@@ -266,18 +266,18 @@ async def get_blog(request, *, id):
     }
 
 
-@get('/api/blogs/{id}')
+@get('/api/blogs/{id}')  # 修改日志时返回日志原数据
 async def api_get_blog(*, id):
     blog = await Blogs.find(id)
     return blog
 
 
-def check_admin(request):
+def check_admin(request):  # 检查是否为管理员
     if request.__user__ is None or not request.__user__.admin:
-        raise APIPermissionError()
+        raise APIPermissionError('Forbidden！')
 
 
-@post('/api/blog/{blog_id}/comments')
+@post('/api/blog/{blog_id}/comments')  # 新建评论
 async def api_blog_comments(request, *, blog_id, content):
     user = request.__user__
     if user is None:
@@ -303,7 +303,7 @@ async def api_comments_delete(request, *, comment_id):
     return comment
 
 
-@get('/manage/comments')
+@get('/manage/comments')  # TODO：管理被举报的评论
 async def manage_comments(request, *, page=1):
     check_admin(request)
     return {
@@ -342,3 +342,32 @@ async def api_users(*, page=1):
         return dict(page=p, users=(), admins=admins)
     users = await Users.findall(where='admin=false', orderby='name desc', limit=(0, p.limit - len_admins))
     return dict(page=p, users=users, admins=admins)
+
+
+@post('/api/admin/{user_id}/manage')  # 删除/增添管理员
+async def admin_manage(request, *, user_id):
+    if request.__user__ is None or not request.__user__.email == 'qingxuanshabao@gmail.com' or user_id == '001486352358573637acbf71e364c86bfb36489d692e243000':
+        raise APIPermissionError('admin manage: forbidden!')
+    user = await Users.find(user_id)
+    if user is None:
+        raise APIResourceNotFoundError('Users')
+    if user.admin:
+        user.admin = False
+    else:
+        user.admin = True
+    new_user = Users(id=user.id, email=user.email, password=user.password, admin=user.admin, name=user.name,
+                     image=user.image, created_at=user.created_at)
+    await new_user.update()
+    return new_user
+
+
+@post('/api/users/{user_id}/delete')
+async def users_delete(request, *, user_id):
+    check_admin(request)
+    user = await Users.find(user_id)
+    if user is None:
+        raise APIResourceNotFoundError('Users')
+    if user.admin and not request.__user__.email == 'qingxuanshabao@gmail.com':
+        raise APIPermissionError('delete admin: forbidden')
+    await Users.delete(user_id)
+    return user
