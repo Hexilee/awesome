@@ -252,5 +252,5 @@ async def api_blog_comments(request, *, blog_id, content):
         raise APIResourceNotFoundError('Blog')
     comment = Comments(id=next_id(), blog_id=blog_id, user_id=user.id, user_name=user.name, user_image=user.image,
                        content=content.strip())
-    await content.save()
+    await comment.save()
     return comment
