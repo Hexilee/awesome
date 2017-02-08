@@ -178,7 +178,7 @@ async def manage_blogs(*, page=1):
     }
 
 
-@get('/api/blogs')
+@get('/api/blogs')  # 发送json到blog管理页面
 async def api_blogs(*, page=1):
     page_index = get_page_index(page)
     num = await Blogs.findnumber('count(id)')
@@ -189,12 +189,62 @@ async def api_blogs(*, page=1):
     return dict(page=p, blogs=blogs)
 
 
+@post('/api/blogs')  # 新建日志
+async def api_create_blog(request, *, name, summary, content):
+    check_admin(request)
+    if not name or not name.strip():
+        raise APIValueError('name', 'name cannot be empty')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty')
+    blog = Blogs(user_id=request.__user__.id, user_name=request.__user__.name,
+                 user_image=request.__user__.image,
+                 name=name.strip(), summary=summary.strip(), content=content.strip())
+    await blog.save()
+    return blog
+
+
+@post('/api/blogs/{blog_id}')  # 修改日志
+async def api_create_blog(blog_id, request, *, name, summary, content):
+    check_admin(request)
+    if not name or not name.strip():
+        raise APIValueError('name', 'name cannot be empty')
+    if not summary or not summary.strip():
+        raise APIValueError('summary', 'summary cannot be empty')
+    if not content or not content.strip():
+        raise APIValueError('content', 'content cannot be empty')
+
+    old_blog = await Blogs.find(blog_id)
+    if old_blog is None:
+        raise APIResourceNotFoundError('Blogs')
+    blog = Blogs(id=blog_id, user_id=request.__user__.id, user_name=request.__user__.name,
+                 user_image=request.__user__.image,
+                 name=name.strip(), summary=summary.strip(), content=content.strip())
+    await blog.update()
+    return blog
+
+
+@post('/api/blogs/{blog_id}/delete')
+async def blog_delete(*, blog_id, request):
+    check_admin(request)
+    blog = await Blogs.find(blog_id)
+    if blog is None:
+        raise APIResourceNotFoundError('Blogs')
+    await Blogs.delete(blog_id)
+    return blog
+
+
 @get('/manage/blogs/create')
-def manage_create_blogs(*, id=''):
+def manage_create_blogs(*, id=''):  # 如果加了id，则为修改日志
+    if id:
+        action = '/api/blogs/%s' % id
+    else:
+        action = '/api/blogs'
     return {
         '__template__': 'manage_blog_edit.html',
         'id': id,
-        'action': '/api/blogs'
+        'action': action
 
     }
 
@@ -223,21 +273,6 @@ async def api_get_blog(*, id):
 def check_admin(request):
     if request.__user__ is None or not request.__user__.admin:
         raise APIPermissionError()
-
-
-@post('/api/blogs')
-async def api_create_blog(request, *, name, summary, content):
-    check_admin(request)
-    if not name or not name.strip():
-        raise APIValueError('name', 'name cannot be empty')
-    if not summary or not summary.strip():
-        raise APIValueError('summary', 'summary cannot be empty')
-    if not content or not content.strip():
-        raise APIValueError('content', 'content cannot be empty')
-    blog = Blogs(user_id=request.__user__.id, user_name=request.__user__.name, user_image=request.__user__.image,
-                 name=name.strip(), summary=summary.strip(), content=content.strip())
-    await blog.save()
-    return blog
 
 
 @post('/api/blog/{blog_id}/comments')
