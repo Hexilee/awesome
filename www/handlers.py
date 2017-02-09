@@ -223,7 +223,7 @@ async def api_edit_blog(blog_id, request, *, name, summary, content):
     if old_blog is None:
         raise APIResourceNotFoundError('Blogs')
     blog = Blogs(id=blog_id, user_id=request.__user__.id, user_name=request.__user__.name,
-                 user_image=request.__user__.image,
+                 user_image=request.__user__.image, created_at=old_blog.created_at,
                  name=name.strip(), summary=summary.strip(), content=content.strip())
     await blog.update()
     return blog
