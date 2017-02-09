@@ -103,19 +103,21 @@ async def authenticate(*, email, password):
     if not password:
         raise APIValueError('password', 'Invalid password')
     users = await Users.findall(where='email=?', args=[email, ])
+    r = web.Response()
+    r.content_type = 'application/json'
     if len(users) == 0:
-        raise APIValueError('email', 'Email not exist')  # TODO: 将错误返回至前端页面
+        r.body = json.dumps({'error': '账号不存在！'}, ensure_ascii=False).encode('utf-8')
+        return r  # TODO: 将错误返回至前端页面
     user = users[0]
     sha1 = hashlib.sha1()
     sha1.update(user.id.encode('utf-8'))
     sha1.update(b':')
     sha1.update(password.encode('utf-8'))
     if not sha1.hexdigest() == user.password:
-        raise APIValueError('password', 'Invalid password')
-    r = web.Response()
+        r.body = json.dumps({'error': '密码错误！'}, ensure_ascii=False).encode('utf-8')
+        return r
     r.set_cookie(COOKIE_NAME, user_to_cookie(user, 86400), max_age=86400, httponly=True)
     user.password = '******'
-    r.content_type = 'application/json'
     r.body = json.dumps(user, ensure_ascii=False).encode('utf-8')
     return r
 

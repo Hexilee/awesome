@@ -29,9 +29,10 @@
                                 password: this.password === '' ? '' : CryptoJS.SHA1(email + ':' + this.password).toString()
                             };
                         $form.postJSON('/api/authenticate', data, function (err, result) {
-                            if (!err) {
-                                location.assign('/');
+                            if (err) {
+                                return $form.showFormError(result.error)
                             }
+                            location.assign('/');
                         });
                     }
                 }
