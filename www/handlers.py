@@ -204,13 +204,13 @@ async def api_create_blog(request, *, name, summary, content):
         raise APIValueError('content', 'content cannot be empty')
     blog = Blogs(user_id=request.__user__.id, user_name=request.__user__.name,
                  user_image=request.__user__.image,
-                 name=name.strip(), summary=summary.strip(), content=content.strip())
+                 name=name.strip(), summary=summary.strip(), content=content)
     await blog.save()
     return blog
 
 
 @post('/api/blogs/{blog_id}')  # 修改日志
-async def api_create_blog(blog_id, request, *, name, summary, content):
+async def api_edit_blog(blog_id, request, *, name, summary, content):
     check_admin(request)
     if not name or not name.strip():
         raise APIValueError('name', 'name cannot be empty')

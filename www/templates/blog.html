@@ -4,9 +4,9 @@
 
 {% block beforehead %}
 
+
 <script>
     var comment_url = '/api/blog/{{ blog.id }}/comments';
-
     $(function () {
         var $form = $('#form-comment');
         $form.submit(function (event) {
@@ -44,7 +44,7 @@
 {% block content %}
 
 <div class="uk-width-medium-3-4">
-    <article class="uk-article">
+    <article class="uk-article" style="margin: 10%">
         <h2>{{ blog.name }}</h2>
         <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
         <p>{{ blog.html_content|safe }}</p>
@@ -106,7 +106,7 @@
 
 </div>
 
-<div class="uk-width-medium-1-4"  >
+<div class="uk-width-medium-1-4">
     <div class="uk-panel uk-panel-box">
         <div class="uk-text-center">
             <img class="uk-border-circle" width="120" height="120" src="{{ blog.user_image }}">
