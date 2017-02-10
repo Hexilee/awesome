@@ -24,8 +24,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-config_default.py
-config_override.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -90,4 +88,9 @@ ENV/
 .spyderproject
 
 # Rope project settings
-.ropeproject
+.ropeprojeca
+
+# My configurations
+config_default.py
+config_override.py
+
