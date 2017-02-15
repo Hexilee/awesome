@@ -371,5 +371,7 @@ async def users_delete(request, *, user_id):
         raise APIResourceNotFoundError('Users')
     if user.admin and not request.__user__.email == 'qingxuanshabao@gmail.com':
         raise APIPermissionError('delete admin: forbidden')
+    if user.email == 'qingxuanshabao@gmail.com':
+        raise APIPermissionError('delete admin: forbidden')
     await Users.delete(user_id)
     return user

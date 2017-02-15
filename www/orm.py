@@ -18,6 +18,7 @@ def log(sql, args=tuple()):
 
 async def create_pool(loop, **kw):
     logging.info('creating database connection pool...')
+# 封装SELECT
     global __pool
     __pool = await aiomysql.create_pool(
         host=kw.get('host', 'localhost'),
@@ -33,7 +34,6 @@ async def create_pool(loop, **kw):
     )
 
 
-# 封装SELECT
 async def select(sql, args, size=None):
     #  TODO:弄清楚log的作用和sql的数据类型
     #  TODO:什么情况下用 await？

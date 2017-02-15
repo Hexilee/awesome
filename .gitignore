@@ -93,4 +93,10 @@ ENV/
 # My configurations
 config_default.py
 config_override.py
-
+fabfile.*
+backup
+log
+*.sql
+.git
+dist
+refresh.py

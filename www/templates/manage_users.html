@@ -97,12 +97,12 @@
                     {% endif %}</p>
             </td>
             <td>
-                <a target="_blank" v-attr="href: '/user/'+damin.email" v-text="admin.name"></a>
+                <a target="_blank" v-attr="href: '/user/'+admin.email" v-text="admin.name"></a>
             </td>
             <td>
                 <span v-text="admin.created_at.toDateTime()"></span>
             </td>
-            <td>{% if __user__.email == host_email %}
+            <td>{% if __user__.email == host_email%}
                 <a href="#0" v-on="click: delete_user(admin)"><i class="uk-icon-trash-o"></i></a>
             </td>{% endif %}
         </tr>
